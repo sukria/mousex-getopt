@@ -15,7 +15,8 @@ use_ok('MouseX::Getopt::GLD');
     package Engine::Foo;
     use Mouse;
 
-    with 'MouseX::Getopt::GLD' => { getopt_conf => [ 'pass_through' ] };
+    with 'MouseX::Getopt::GLD';
+    sub getopt_conf { [ 'pass_through' ] }
 
     has 'foo' => (
         metaclass   => 'Getopt',
@@ -28,7 +29,8 @@ use_ok('MouseX::Getopt::GLD');
     package Engine::Bar;
     use Mouse;
 
-    with 'MouseX::Getopt::GLD' => { getopt_conf => [ 'pass_through' ] };;
+    with 'MouseX::Getopt::GLD';
+    sub getopt_conf { [ 'pass_through' ] }
 
     has 'bar' => (
         metaclass   => 'Getopt',

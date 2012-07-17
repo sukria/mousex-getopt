@@ -21,6 +21,10 @@ has help_flag => (
     documentation => 'Prints this usage information.',
 );
 
+# as we don't have MouseX::Role::Parameterized, we ask the caller to implement
+# getopt_conf
+sub getopt_conf { [] }
+
 around _getopt_spec => sub {
     shift;
     shift->_gld_spec(@_);
@@ -29,6 +33,13 @@ around _getopt_spec => sub {
 around _getopt_get_options => sub {
     shift;
     my ($class, $params, $opt_spec) = @_;
+
+    my $getopt_conf = $class->getopt_conf;
+
+    my $args = ref($opt_spec->[-1]) eq 'HASH' ? pop @$opt_spec : {};
+    unshift @{$args->{getopt_conf}}, @$getopt_conf;
+    push @$opt_spec, $args;     
+
     return Getopt::Long::Descriptive::describe_options($class->_usage_format(%$params), @$opt_spec);
 };
 
@@ -75,6 +86,8 @@ no Mouse::Role;
   use Mouse;
 
   with 'MouseX::Getopt::GLD';
+
+  sub getopt_conf { [ 'pass_through' ] }
 
   has 'out' => (is => 'rw', isa => 'Str', required => 1);
   has 'in'  => (is => 'rw', isa => 'Str', required => 1);

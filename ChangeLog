@@ -1,5 +1,9 @@
 Revision history for Perl extension MouseX-Getopt
 
+0.32_01
+
+	* support for getopt_conf
+
 0.32 Thu Jul 29 20:21:56 JST 2010
 
   * added workaround for $@ issue in Data::Util.
